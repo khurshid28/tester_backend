@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, ParseIntPipe, Param, Delete, Put } from '@nestjs/common';
 
 import { AppService } from './app.service';
 
@@ -15,5 +15,22 @@ export class AppController {
   @Get("/all")
   findAll() {
     return this.appService.findAll();
+  }
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.appService.findOne(id);
+  }
+
+  @Put(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: { question?: string; name?: string },
+  ) {
+    return this.appService.update(id, body);
+  }
+
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.appService.delete(id);
   }
 }
