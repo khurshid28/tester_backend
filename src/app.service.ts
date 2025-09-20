@@ -5,18 +5,25 @@ import { PrismaService } from './prisma/prisma.service';
 export class AppService {
   constructor(private prisma: PrismaService) {}
 
-  create(data: { question?: string; name?: string }) {
+  create(data: { question?: string; name?: string;categoryId: number }) {
     return this.prisma.test.create({ data });
   }
 
   findAll() {
-    return this.prisma.test.findMany();
+    return this.prisma.test.findMany({
+      include : {
+        category : true
+      }
+    });
   }
 
 
   async findOne(id: number) {
     return this.prisma.test.findUnique({
       where: { id },
+      include : {
+        category : true
+      }
     });
   }
 

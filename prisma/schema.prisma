@@ -17,5 +17,19 @@ model Test {
   id        Int @id @default(autoincrement()) @unique
   question     String?   @db.Text 
   answer      String? @db.Text 
+
+  categoryId Int?
+
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+
+model Category {
+  id    Int     @id @default(autoincrement())
+  name  String
+
+  tests Test[] 
   createdAt DateTime @default(now())
 }

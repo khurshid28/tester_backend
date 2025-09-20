@@ -8,7 +8,7 @@ export class AppController {
   constructor(private appService: AppService) {}
 
   @Post()
-  create(@Body() data: { question?: string; name?: string }) {
+  create(@Body() data: { question?: string; name?: string; categoryId: number }) {
     return this.appService.create(data);
   }
 
