@@ -13,23 +13,24 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-model Test {
-  id        Int @id @default(autoincrement()) @unique
-  question     String?   @db.Text 
-  answer      String? @db.Text 
-
-  categoryId Int?
-
-  category   Category? @relation(fields: [categoryId], references: [id])
-
-  createdAt DateTime @default(now())
+model Category {
+  id          Int           @id @default(autoincrement())
+  name        String?
+  subcategories SubCategory[]
 }
 
+model SubCategory {
+  id          Int           @id @default(autoincrement())
+  name        String?
+  categoryId  Int?
+  category    Category?      @relation(fields: [categoryId], references: [id])
+  tests       Test[]
+}
 
-model Category {
-  id    Int     @id @default(autoincrement())
-  name  String
-
-  tests Test[] 
-  createdAt DateTime @default(now())
+model Test {
+  id          Int           @id @default(autoincrement())
+  question    String?
+  answer      String?
+  subCategoryId Int?
+  subCategory SubCategory?   @relation(fields: [subCategoryId], references: [id])
 }

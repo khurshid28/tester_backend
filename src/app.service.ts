@@ -5,14 +5,15 @@ import { PrismaService } from './prisma/prisma.service';
 export class AppService {
   constructor(private prisma: PrismaService) {}
 
-  create(data: { question?: string; name?: string;categoryId: number }) {
-    return this.prisma.test.create({ data });
+ async create(data: { question?: string; answer?: string; subCategoryId?: number }) {
+   
+    return await this.prisma.test.create({ data });
   }
 
-  findAll() {
-    return this.prisma.test.findMany({
+  async findAll() {
+    return await this.prisma.test.findMany({
       include : {
-        category : true
+        subCategory : true
       }
     });
   }
@@ -22,7 +23,7 @@ export class AppService {
     return this.prisma.test.findUnique({
       where: { id },
       include : {
-        category : true
+        subCategory : true,
       }
     });
   }
