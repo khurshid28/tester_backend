@@ -1,5 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards } from '@nestjs/common';
 import { SubcategoryService } from './subcategory.service';
+import { JwtAuthGuard } from 'src/jwt/jwt-guard';
+import { CurrentUser } from 'src/jwt/user.decoration';
+
+
+
+@UseGuards(JwtAuthGuard)
 
 @Controller('subcategory')
 export class SubcategoryController {
@@ -9,13 +15,13 @@ export class SubcategoryController {
   create(@Body() body: {
     name?: string;
     categoryId?: number
-  }) {
-    return this.subcategoryService.create(body);
+  },@CurrentUser() user: {id? : number,login? : string}) {
+    return this.subcategoryService.create(body,user);
   }
 
   @Get("/all")
-  findAll() {
-    return this.subcategoryService.findAll();
+  findAll(@CurrentUser() user: {id? : number,login? : string}) {
+    return this.subcategoryService.findAll(user);
   }
 
   @Get(':id')

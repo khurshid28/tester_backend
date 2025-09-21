@@ -9,14 +9,20 @@ export class SubcategoryService {
   async create(data: {
      name? : string;
      categoryId?: number
-   }) {
+   },user: {id? : number,login? : string}) {
      return await this.prisma.subCategory.create({
-       data
+      data : {
+        ...data,
+        userId : user.id
+      }
      }) ;
    }
  
-  async findAll() {
+  async findAll(user: {id? : number,login? : string}) {
      return await this.prisma.subCategory.findMany({
+      where : {
+        userId : user.id,
+      },
        include : {
          tests : true,
          category : true

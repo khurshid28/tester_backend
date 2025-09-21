@@ -19,6 +19,10 @@ model Category {
   subcategories SubCategory[]
   createdAt DateTime  @default(now())
 
+
+  userId        Int?
+  user          User?          @relation(fields: [userId], references: [id])
+
 }
 
 model SubCategory {
@@ -28,6 +32,10 @@ model SubCategory {
   category    Category?      @relation(fields: [categoryId], references: [id])
   tests       Test[]
   createdAt DateTime  @default(now())
+
+
+   userId        Int?
+  user          User?          @relation(fields: [userId], references: [id])
 
 }
 
@@ -39,4 +47,23 @@ model Test {
   subCategory SubCategory?   @relation(fields: [subCategoryId], references: [id])
   createdAt DateTime  @default(now())
 
+
+   userId        Int?
+  user          User?          @relation(fields: [userId], references: [id])
+
+}
+
+
+
+model User {
+  id        Int      @id @default(autoincrement()) 
+  login     String    @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+
+
+  categories Category[]
+  subcategories SubCategory[]
+  tests     Test[]
 }

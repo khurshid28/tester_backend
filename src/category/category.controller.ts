@@ -1,21 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards } from '@nestjs/common';
 import { CategoryService } from './category.service';
+import { JwtAuthGuard } from 'src/jwt/jwt-guard';
+import { CurrentUser } from 'src/jwt/user.decoration';
 
+@UseGuards(JwtAuthGuard)
 
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post()
-  create(@Body() createCategoryDto: {
+  create(@Body() body: {
     name? :string 
-  }) {
-    return this.categoryService.create(createCategoryDto);
+  },@CurrentUser() user: {id? : number,login? : string}) {
+    return this.categoryService.create(body,user);
   }
 
   @Get("/all")
-  findAll() {
-    return this.categoryService.findAll();
+  findAll(@CurrentUser() user: {id? : number,login? : string}) {
+    
+    return this.categoryService.findAll(user);
   }
 
   @Get(':id')

@@ -1,20 +1,23 @@
-import { Controller, Get, Post, Body, ParseIntPipe, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, ParseIntPipe, Param, Delete, Put, UseGuards } from '@nestjs/common';
 
 import { AppService } from './app.service';
+import { JwtAuthGuard } from './jwt/jwt-guard';
+import { CurrentUser } from './jwt/user.decoration';
 
+@UseGuards(JwtAuthGuard)
 
 @Controller("/test")
 export class AppController {
   constructor(private appService: AppService) {}
 
   @Post()
-  create(@Body() data: { question?: string; name?: string; subCategoryId: number }) {
-    return this.appService.create(data);
+  create(@Body() data: { question?: string; name?: string; subCategoryId: number },@CurrentUser() user: {id? : number,login? : string}) {
+    return this.appService.create(data,user);
   }
 
   @Get("/all")
-  findAll() {
-    return this.appService.findAll();
+  findAll(@CurrentUser() user: {id? : number,login? : string}) {
+    return this.appService.findAll(user);
   }
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {

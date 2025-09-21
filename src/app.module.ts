@@ -7,16 +7,22 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { CategoryModule } from './category/category.module';
 import { SubcategoryModule } from './subcategory/subcategory.module';
+import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './jwt/jwt.strategy';
 
 @Module({
-  imports: [PrismaModule, ServeStaticModule.forRoot({
+  imports: [
+    PassportModule.register({ defaultStrategy: 'jwt', }),
+    
+    PrismaModule, ServeStaticModule.forRoot({
     rootPath: join(__dirname,"..", 'web'),
     serveRoot: '/view', 
     renderPath: '/view*',
   
-  }), CategoryModule, SubcategoryModule,],
+  }), CategoryModule, SubcategoryModule, AuthModule,],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,JwtStrategy],
 })
 export class AppModule {}
 

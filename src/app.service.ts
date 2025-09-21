@@ -5,13 +5,19 @@ import { PrismaService } from './prisma/prisma.service';
 export class AppService {
   constructor(private prisma: PrismaService) {}
 
- async create(data: { question?: string; answer?: string; subCategoryId?: number }) {
+ async create(data: { question?: string; answer?: string; subCategoryId?: number },user: {id? : number,login? : string}) {
    
-    return await this.prisma.test.create({ data });
+    return await this.prisma.test.create({ data : {
+      ...data,
+      userId: user.id
+    } });
   }
 
-  async findAll() {
+  async findAll(user: {id? : number,login? : string}) {
     return await this.prisma.test.findMany({
+      where : {
+        userId: user.id
+      },
       include : {
         subCategory : true
       }
