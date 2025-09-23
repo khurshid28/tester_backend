@@ -29,8 +29,9 @@ model SubCategory {
   id          Int           @id @default(autoincrement())
   name        String?
   categoryId  Int?
-  category    Category?      @relation(fields: [categoryId], references: [id])
+  category    Category?      @relation(fields: [categoryId], references: [id],onDelete: Cascade)
   tests       Test[]
+  testGroups   TestGroup[] 
   createdAt DateTime  @default(now())
 
 
@@ -38,17 +39,32 @@ model SubCategory {
   user          User?          @relation(fields: [userId], references: [id])
 
 }
+model TestGroup {
+  id           Int           @id @default(autoincrement())
+  name         String?
+  subCategoryId Int?         // Many-to-one relation to SubCategory
+  subCategory  SubCategory?  @relation(fields: [subCategoryId], references: [id],onDelete: Cascade)
+  tests        Test[]        // One-to-many relation with Test
+  createdAt    DateTime      @default(now())
+
+  userId       Int?
+  user         User?         @relation(fields: [userId], references: [id])
+}
+
 
 model Test {
   id          Int           @id @default(autoincrement())
   question    String? @db.VarChar(255)
   answer      String? @db.VarChar(255)
   subCategoryId Int?
-  subCategory SubCategory?   @relation(fields: [subCategoryId], references: [id])
+  subCategory SubCategory?   @relation(fields: [subCategoryId], references: [id],onDelete: Cascade)
   createdAt DateTime  @default(now())
 
+  testGroupId  Int?          // Many-to-one relation to TestGroup
+  testGroup    TestGroup?    @relation(fields: [testGroupId], references: [id])
 
-   userId        Int?
+
+  userId        Int?
   user          User?          @relation(fields: [userId], references: [id])
 
 }
@@ -66,4 +82,5 @@ model User {
   categories Category[]
   subcategories SubCategory[]
   tests     Test[]
+  testGroups   TestGroup[] 
 }

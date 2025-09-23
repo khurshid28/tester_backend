@@ -25,6 +25,7 @@ export class SubcategoryService {
       },
        include : {
          tests : true,
+         testGroups : true,
          category : true
        }
      })

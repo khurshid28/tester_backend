@@ -5,7 +5,7 @@ import { PrismaService } from './prisma/prisma.service';
 export class AppService {
   constructor(private prisma: PrismaService) {}
 
- async create(data: { question?: string; answer?: string; subCategoryId?: number },user: {id? : number,login? : string}) {
+ async create(data: { question?: string; answer?: string; subCategoryId?: number; testGroupId?:number },user: {id? : number,login? : string}) {
    
     return await this.prisma.test.create({ data : {
       ...data,
@@ -19,7 +19,8 @@ export class AppService {
         userId: user.id
       },
       include : {
-        subCategory : true
+        subCategory : true,
+        testGroup : true
       }
     });
   }
@@ -35,7 +36,7 @@ export class AppService {
   }
 
   // Update by ID
-  async update(id: number, data: { question?: string; name?: string }) {
+  async update(id: number, data: { question?: string; name?: string; testGroupId?:number }) {
     return this.prisma.test.update({
       where: { id },
       data,

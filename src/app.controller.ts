@@ -11,7 +11,7 @@ export class AppController {
   constructor(private appService: AppService) {}
 
   @Post()
-  create(@Body() data: { question?: string; name?: string; subCategoryId: number },@CurrentUser() user: {id? : number,login? : string}) {
+  create(@Body() data: { question?: string; name?: string; subCategoryId: number; testGroupId?:number },@CurrentUser() user: {id? : number,login? : string}) {
     return this.appService.create(data,user);
   }
 
@@ -27,7 +27,7 @@ export class AppController {
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() body: { question?: string; name?: string },
+    @Body() body: { question?: string; name?: string; testGroupId?:number },
   ) {
     return this.appService.update(id, body);
   }

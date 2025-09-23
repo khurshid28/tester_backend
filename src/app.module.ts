@@ -10,6 +10,7 @@ import { SubcategoryModule } from './subcategory/subcategory.module';
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt/jwt.strategy';
+import { TestGroupModule } from './test-group/test-group.module';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { JwtStrategy } from './jwt/jwt.strategy';
     serveRoot: '/view', 
     renderPath: '/view*',
   
-  }), CategoryModule, SubcategoryModule, AuthModule,],
+  }), CategoryModule, SubcategoryModule, AuthModule, TestGroupModule,],
   controllers: [AppController],
   providers: [AppService,JwtStrategy],
 })
