@@ -61,7 +61,7 @@ model Test {
   createdAt DateTime  @default(now())
 
   testGroupId  Int?          // Many-to-one relation to TestGroup
-  testGroup    TestGroup?    @relation(fields: [testGroupId], references: [id])
+  testGroup    TestGroup?    @relation(fields: [testGroupId], references: [id],onDelete: Cascade)
 
 
   userId        Int?
