@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, ParseIntPipe, Put } from '@nestjs/common';
 import { TestGroupService } from './test-group.service';
 import { Prisma } from 'generated/prisma';
 
@@ -21,7 +21,7 @@ export class TestGroupController {
     return this.service.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id', ParseIntPipe) id: number, @Body() data: Prisma.TestGroupUpdateInput) {
     return this.service.update(id, data);
   }
